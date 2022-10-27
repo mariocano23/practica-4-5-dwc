@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="./css/gestor.css" />
+    <title>Gestor de Proyectos</title>
+  </head>
+  <body>
+    <div id="gestor">
+      <h1>Gestor de Tareas</h1>
+      <p id="tareas">
+        <textarea cols="50" rows="7"></textarea>
+        <input type="button" value="Añadir" class="add" onclick="añadir()"/>
+        <input type="button" value="Mostrar" class="sho" onclick="mostrar()"/>
+      </p>
+      <div id="contenedor">
+        <div id="pendientes">
+          <h1>Pendientes</h1>
+          <div class="tarea">
+            <p>Texto de la tarea</p>
+            <p class="botones">
+              <input type="button" value="Borrar" class="del" />
+              <input type="button" value="Acabar" class="end" />
+            </p>
+          </div>
+          <div class="tarea">
+            <p>Texto de la tarea</p>
+            <p class="botones">
+              <input type="button" value="Borrar" class="del" />
+              <input type="button" value="Acabar" class="end" />
+            </p>
+          </div>
+        </div>
+        <div id="acabadas">
+          <h1>Acabadas</h1>
+          <div class="acabada">
+            <p>Texto de la tarea</p>
+            <p class="botones">
+              <input type="button" value="Archivar" class="del" />
+              <input type="button" value="Volver" class="end" />
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script  src="./js/gestor.js"></script>
+  </body>
+</html>
