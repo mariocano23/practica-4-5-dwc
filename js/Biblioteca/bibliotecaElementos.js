@@ -2,9 +2,13 @@
 
 var doc = window.document;
 
-function cuentaElementos(elemento) { //Función para obtener el número de un tipo de elemento en un HTML.
-    let elementos = doc.querySelectorAll(elemento);
-    return elementos.length;
+function creaIds() {//Función que crea una ID aleatoria de 16 caracteres hexadecimales.
+    var letras = ["a","b","c","d","e","f","0","1","2","3","4","5","6","7","8","9"];
+    let id="";
+    for (let index = 0; index < 16; index++) {
+        id+= letras[Math.floor(Math.random()*letras.length)];
+    }
+    return id;
 }
 
 function añadir() { //Función que recoge el texto de la textarea, crea una tarea y la añade a pendientes.
@@ -13,8 +17,9 @@ function añadir() { //Función que recoge el texto de la textarea, crea una tar
     let texto = textarea.value;
     if(!texto==""){ //Si el usuario intenta crear una tarea sin añadir texto no se creara y se mostrara un aviso.
         tarea.setAttribute("class","tarea");
-        let id = "tarea"+(cuentaElementos(".tarea")+cuentaElementos(".acabada"));
+        let id = "tarea"+creaIds();
         tarea.setAttribute("id",id);
+        tarea.setAttribute("draggable",true);
         tarea.innerHTML=`<p>${texto}</p>
         <p class="botones">
         <input type="button" value="Borrar" class="del" onclick='borrar("${id}")'/>
@@ -34,50 +39,67 @@ function añadir() { //Función que recoge el texto de la textarea, crea una tar
         doc.getElementById("tareas").appendChild(msgError);
         }  
     }
-    
+    textarea.value="";
 }
 
 function borrar(id){ //Función para eliminar una tarea pendiente si se ha creado por error o ya no es necesaria.
-   doc.getElementById(id).remove();
-}
-
-function acabar(id) {//Función que pasa una tarea de pendiente a acabada y hace los cambios pertinentes al elemento.
+    doc.getElementById(id).remove();
+ }
+ 
+ function acabar(id) {//Función que pasa una tarea de pendiente a acabada y hace los cambios pertinentes al elemento.
     let acabado = doc.getElementById(id);
-    acabado.setAttribute("class","acabada");
-    let arch = doc.querySelector("#"+id+" .del");
-    arch.setAttribute("value","Archivar");
-    arch.setAttribute("onclick","archivar('"+id+"')");
-    let volv = doc.querySelector("#"+id+" .end");
-    volv.setAttribute("value","Volver");
-    volv.setAttribute("onclick","volver('"+id+"')");
-    doc.getElementById("acabadas").appendChild(acabado);
-}
+     acabado.setAttribute("class","acabada");
+     let arch = doc.querySelector("#"+id+" .del");
+     arch.setAttribute("value","Archivar");
+     arch.setAttribute("onclick","archivar('"+id+"')");
+     let volv = doc.querySelector("#"+id+" .end");
+     volv.setAttribute("value","Volver");
+     volv.setAttribute("onclick","volver('"+id+"')");
+     doc.getElementById("acabadas").appendChild(acabado);
+ }
+ 
+ function volver(id) {//Función que pasa una tarea de acabada a pendiente y hace los cambios pertinentes al elemento.
+     let acabado = doc.getElementById(id);
+     acabado.setAttribute("id",id);
+     acabado.setAttribute("class","tarea");
+     let arch = doc.querySelector("#"+id+" .del");
+     arch.setAttribute("value","Borrar");
+     arch.setAttribute("onclick","borrar('"+id+"')");
+     let volv = doc.querySelector("#"+id+" .end");
+     volv.setAttribute("value","Acabar");
+     volv.setAttribute("onclick","acabar('"+id+"')");
+     
+     doc.getElementById("pendientes").appendChild(acabado);
+ }
+ 
+ function archivar(id) {//Función que oculta la tarea acabada que quieras.
+     let archivado = doc.getElementById(id);
+     archivado.classList.add("archivado");
+     doc.getElementById("acabadas").appendChild(archivado);
+ }
+ 
+ function mostrar() { //Función para mostrar las tareas archivadas.
+     let desaparecidos = doc.getElementsByClassName("archivado");
+     while (desaparecidos.length>0) {
+         desaparecidos[0].classList.remove("archivado");
+     }
+ }
 
-function volver(id) {//Función que pasa una tarea de acabada a pendiente y hace los cambios pertinentes al elemento.
-    let acabado = doc.getElementById(id);
-    acabado.setAttribute("id",id);
-    acabado.setAttribute("class","tarea");
-    let arch = doc.querySelector("#"+id+" .del");
-    arch.setAttribute("value","Borrar");
-    arch.setAttribute("onclick","borrar('"+id+"')");
-    let volv = doc.querySelector("#"+id+" .end");
-    volv.setAttribute("value","Acabar");
-    volv.setAttribute("onclick","acabar('"+id+"')");
-    doc.getElementById("pendientes").appendChild(acabado);
-}
-
-function archivar(id) {//Función que oculta la tarea acabada que quieras.
-    let archivado = doc.getElementById(id);
-    archivado.classList.add("archivado");
-    doc.getElementById("acabadas").appendChild(archivado);
-}
-
-function mostrar() { //Función para mostrar las tareas archivadas.
-    let desaparecidos = doc.getElementsByClassName("archivado");
-    while (desaparecidos.length>0) {
-        console.log(desaparecidos[0]);
-        desaparecidos[0].classList.remove("archivado");
+function eliminarTareas() { //Función que elimina las tareas que ya están el HTML.
+    let tareas = doc.getElementsByClassName("tarea");
+    while (tareas.length>0) {
+        tareas[0].remove();
+    }
+    let acabadas = doc.getElementsByClassName("acabada");
+    while (acabadas.length>0) {
+        acabadas[0].remove();
     }
 }
 
-export {añadir,borrar,acabar,volver,archivar,mostrar};
+function insertAfter(nuevoElemento, elementoExistente) { //Función que añade un elemento nuevo después de uno ya existente.
+    let parent = elementoExistente.parentNode;
+    parent.replaceChild(nuevoElemento, elementoExistente);
+    parent.insertBefore(elementoExistente, nuevoElemento);
+}
+
+export {añadir,borrar,acabar,volver,archivar,mostrar,creaIds,eliminarTareas,insertAfter};
