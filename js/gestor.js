@@ -61,6 +61,9 @@ window.onload = () => {
                     acabar(tarea.id);
                 }else{
                     if((evento.target.classList.contains("tarea")&&tarea.classList.contains("tarea"))){ //Comprobación para poder añadir una tarea pendienta después de otra al soltarla sobre ella.
+                        if(evento.target==tarea.previousSibling){
+                            insertAfter(evento.target,tarea);
+                        }
                         insertAfter(tarea,evento.target);
                         evento.target.classList.remove("destacado");
                     }
