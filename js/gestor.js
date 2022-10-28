@@ -28,9 +28,9 @@ window.onload = () => {
         
     });
 
-    document.addEventListener("dragend", function (evento) {//Evento que quita el estilo destacado al soltar el elemento.
-            evento.target.parentNode.classList.remove("destacado");
-            evento.target.classList.remove("destacado");
+    document.addEventListener("dragend", function (evento) {//Evento que quita el estilo destacado al soltar el elemento. 
+        evento.target.parentNode.classList.remove("destacado");
+        evento.target.classList.remove("destacado");
     });
 
 
@@ -60,8 +60,9 @@ window.onload = () => {
                 if(evento.target.id=="acabadas"&&tarea.className=="tarea"){
                     acabar(tarea.id);
                 }else{
-                    if((evento.target.className=="tarea"&&tarea.className=="tarea")){ //Comprobación para poder añadir una tarea pendienta después de otra al soltarla sobre ella.
+                    if((evento.target.classList.contains("tarea")&&tarea.classList.contains("tarea"))){ //Comprobación para poder añadir una tarea pendienta después de otra al soltarla sobre ella.
                         insertAfter(tarea,evento.target);
+                        evento.target.classList.remove("destacado");
                     }
                 }
             }
