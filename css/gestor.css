@@ -2,17 +2,20 @@
   margin: 1%;
 }
 
+
+
 #contenedor > div {
   /* Selector hijos directos (primer nivel) */
   float: left;
   width: 300px;
-  border: 2px solid black;
   height: auto;
   min-height: 500px;
   padding: 0.5%;
   background-color: #e9e6e6;
   margin-right: 0.5%;
 }
+
+
 
 .botones {
   text-align: right;
@@ -47,4 +50,8 @@
   height: 0;
   margin: 0;
   padding: 0;
+}
+
+.destacado{
+  border: solid 2px black ;
 }
