@@ -62,9 +62,10 @@ window.onload = () => {
                 }else{
                     if((evento.target.classList.contains("tarea")&&tarea.classList.contains("tarea"))){ //Comprobación para poder añadir una tarea pendienta después de otra al soltarla sobre ella.
                         if(evento.target==tarea.previousSibling){
-                            tarea.parentNode.insertBefore(tarea,evento.target);
+                            insertAfter(evento.target,tarea);
+                        }else{
+                            insertAfter(tarea,evento.target);
                         }
-                        insertAfter(tarea,evento.target);
                         evento.target.classList.remove("destacado");
                     }
                 }
